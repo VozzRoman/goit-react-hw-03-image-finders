@@ -95,12 +95,10 @@ export class App extends Component {
           dataPicture={this.state.picture}
           clickOnPic={this.showToggleModal}
         />
-
-        {this.state.picture.length > 0 && this.state.picture.length >= 12 && (
+        {this.state.loading && <Loader />}
+        {this.state.picture.length >= 12 && (
           <Button onClick={this.loadMOreButton} />
         )}
-
-        {this.state.loading && <Loader />}
 
         {this.state.visibility && (
           <Modal
