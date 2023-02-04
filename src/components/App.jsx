@@ -79,7 +79,7 @@ export class App extends Component {
   };
 
   render() {
-    const { picture, loading, image, tags, visibility } = this.state;
+    const { picture, loading, image, tags, visibility, totalHits } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handlerFromForm} />
@@ -91,9 +91,7 @@ export class App extends Component {
             disabled={this.state.totalHits === picture.length}
             onClick={this.loadMOreButton}
             textChenge={
-              this.state.totalHits === picture.length
-                ? 'No more picture'
-                : 'Load More'
+              totalHits === picture.length ? 'No more picture' : 'Load More'
             }
           />
         )}
