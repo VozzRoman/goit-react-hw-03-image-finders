@@ -28,13 +28,18 @@ export class App extends Component {
       });
       try {
         const data = await fecthServerApi(search, currentPage);
+        if (data.hits.length < 1) {
+          alert(
+            'Sorry, there are no images matching your search query. Please try again.'
+          );
+        }
         this.setState(prevState => {
           return {
             picture: [...prevState.picture, ...data.hits],
           };
         });
       } catch (error) {
-        console.log(error);
+        console.log('Fetch is not working, error');
       } finally {
         this.setState({
           loading: false,
@@ -69,17 +74,17 @@ export class App extends Component {
         currentPage: prevState.currentPage + 1,
       };
     });
-    //  if (this.currentPage !== 1) {
-    //    this.scrollOnLoadButton();
-    //  }
+    if (this.currentPage !== 1) {
+      this.scrollOnLoadButton();
+    }
   };
 
-  //   scrollOnLoadButton = () => {
-  //     window.scrollTo({
-  //       top: document.documentElement.scrollHeight,
-  //       behavior: 'smooth',
-  //     });
-  //   };
+  scrollOnLoadButton = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    });
+  };
 
   render() {
     return (
@@ -102,6 +107,7 @@ export class App extends Component {
             closeModal={this.showToggleModal}
             img={this.state.image}
             tags={this.state.tags}
+            state={this.state.visibility}
           />
         )}
       </>

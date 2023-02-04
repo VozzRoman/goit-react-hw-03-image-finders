@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import css from '../Modal/ModalStyle.module.css';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
-// const modalRoot = document.querySelector('#modal-root');
+const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
   static propTypes = {
@@ -36,12 +37,13 @@ export class Modal extends Component {
 
   render() {
     const { img, tags } = this.props;
-    return (
+    return createPortal(
       <div className={css.Overlay} onClick={this.handleBackDrop}>
         <div className={css.Modal}>
           <img src={img} alt={tags} />
         </div>
-      </div>
+      </div>,
+      modalRoot
     );
   }
 }
