@@ -2,6 +2,8 @@ import { Component } from 'react';
 import css from '../Modal/ModalStyle.module.css';
 import PropTypes from 'prop-types';
 
+// const modalRoot = document.querySelector('#modal-root');
+
 export class Modal extends Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,

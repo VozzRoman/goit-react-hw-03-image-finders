@@ -9,7 +9,11 @@ export const ImageGalleryItem = ({ el, clickOnItemPic }) => {
       className={css.ImageGallerytem}
       onClick={() => clickOnItemPic(largeImageURL, el.tags)}
     >
-      <img src={webformatURL} alt={tags} />
+      <img
+        className={css.ImageGalleryItemImage}
+        src={webformatURL}
+        alt={tags}
+      />
     </li>
   );
 };

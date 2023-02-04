@@ -17,29 +17,29 @@ export class App extends Component {
     tags: '',
   };
   async componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.search !== this.state.search ||
-      prevState.currentPage !== this.state.currentPage
-    ) {
-      console.log('prevState.currentPage', prevState.currentPage);
-      console.log('this.state.currentPage', this.state.currentPage);
-      console.log('prevState.search', prevState.search);
-      console.log('this.state.search', this.state.search);
+    const { search, currentPage } = this.state;
+    if (prevState.search !== search || prevState.currentPage !== currentPage) {
+      // console.log('prevState.currentPage', prevState.currentPage);
+      // console.log('this.state.currentPage', this.state.currentPage);
+      // console.log('prevState.search', prevState.search);
+      // console.log('this.state.search', this.state.search);
       this.setState({
         loading: true,
       });
-      const data = await fecthServerApi(
-        this.state.search,
-        this.state.currentPage
-      );
-      this.setState(prevState => {
-        return {
-          picture: [...prevState.picture, ...data.hits],
-        };
-      });
-      this.setState({
-        loading: false,
-      });
+      try {
+        const data = await fecthServerApi(search, currentPage);
+        this.setState(prevState => {
+          return {
+            picture: [...prevState.picture, ...data.hits],
+          };
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.setState({
+          loading: false,
+        });
+      }
     }
   }
   handlerFromForm = search => {
@@ -69,7 +69,17 @@ export class App extends Component {
         currentPage: prevState.currentPage + 1,
       };
     });
+    //  if (this.currentPage !== 1) {
+    //    this.scrollOnLoadButton();
+    //  }
   };
+
+  //   scrollOnLoadButton = () => {
+  //     window.scrollTo({
+  //       top: document.documentElement.scrollHeight,
+  //       behavior: 'smooth',
+  //     });
+  //   };
 
   render() {
     return (
@@ -81,10 +91,12 @@ export class App extends Component {
           clickOnPic={this.showToggleModal}
         />
 
-        {this.state.picture.length !== 0 && (
+        {this.state.picture.length > 0 && this.state.picture.length >= 12 && (
           <Button onClick={this.loadMOreButton} />
         )}
+
         {this.state.loading && <Loader />}
+
         {this.state.visibility && (
           <Modal
             closeModal={this.showToggleModal}
