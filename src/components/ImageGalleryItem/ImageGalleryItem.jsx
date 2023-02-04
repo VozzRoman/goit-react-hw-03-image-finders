@@ -7,7 +7,7 @@ export const ImageGalleryItem = ({ el, clickOnItemPic }) => {
   return (
     <li
       className={css.ImageGallerytem}
-      onClick={() => clickOnItemPic(largeImageURL, el.tags)}
+      onClick={() => clickOnItemPic(largeImageURL, tags)}
     >
       <img
         className={css.ImageGalleryItemImage}

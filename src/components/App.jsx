@@ -5,12 +5,14 @@ import { fecthServerApi } from 'api/apiService';
 import { Modal } from './Modal/Modal';
 import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
+import Notiflix from 'notiflix';
 
 export class App extends Component {
   state = {
     search: '',
     picture: [],
     currentPage: 1,
+    totalHits: 0,
     visibility: false,
     image: '',
     loading: false,
@@ -29,13 +31,14 @@ export class App extends Component {
       try {
         const data = await fecthServerApi(search, currentPage);
         if (data.hits.length < 1) {
-          alert(
-            'Sorry, there are no images matching your search query. Please try again.'
+          return Notiflix.Notify.info(
+            'Sorry, but no images matching your search query. Enter correct value.'
           );
         }
         this.setState(prevState => {
           return {
             picture: [...prevState.picture, ...data.hits],
+            totalHits: data.total,
           };
         });
       } catch (error) {
@@ -48,8 +51,7 @@ export class App extends Component {
     }
   }
   handlerFromForm = search => {
-    console.log(search);
-
+    //  console.log(search);
     this.setState({
       currentPage: 1,
       image: '',
@@ -74,38 +76,34 @@ export class App extends Component {
         currentPage: prevState.currentPage + 1,
       };
     });
-    if (this.currentPage !== 1) {
-      this.scrollOnLoadButton();
-    }
-  };
-
-  scrollOnLoadButton = () => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth',
-    });
   };
 
   render() {
+    const { picture, loading, image, tags, visibility } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handlerFromForm} />
 
-        <ImageGallery
-          dataPicture={this.state.picture}
-          clickOnPic={this.showToggleModal}
-        />
-        {this.state.loading && <Loader />}
-        {this.state.picture.length >= 12 && (
-          <Button onClick={this.loadMOreButton} />
+        <ImageGallery dataPicture={picture} clickOnPic={this.showToggleModal} />
+        {loading && <Loader />}
+        {picture.length >= 12 && (
+          <Button
+            disabled={this.state.totalHits === picture.length}
+            onClick={this.loadMOreButton}
+            textChenge={
+              this.state.totalHits === picture.length
+                ? 'No more picture'
+                : 'Load More'
+            }
+          />
         )}
 
-        {this.state.visibility && (
+        {visibility && (
           <Modal
             closeModal={this.showToggleModal}
-            img={this.state.image}
-            tags={this.state.tags}
-            state={this.state.visibility}
+            img={image}
+            tags={tags}
+            state={visibility}
           />
         )}
       </>

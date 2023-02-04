@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import css from '../Searchbar/SearchbarStlye.module.css';
+import Notiflix from 'notiflix';
 import PropTypes from 'prop-types';
 export class Searchbar extends Component {
   static propTtypes = {
@@ -19,7 +20,7 @@ export class Searchbar extends Component {
     e.preventDefault();
     console.log(this.state.search);
     if (this.state.search === '') {
-      alert('Enter name of collection');
+      Notiflix.Notify.info('The field is empty, please enter value');
       return;
     }
     this.props.onSubmit(this.state.search);

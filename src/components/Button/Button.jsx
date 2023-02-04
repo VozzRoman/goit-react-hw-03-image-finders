@@ -1,14 +1,12 @@
 import css from '../Button/ButtonStyle.module.css';
 import PropTypes from 'prop-types';
-import { Loader } from 'components/Loader/Loader';
 
-export const Button = ({ onClick, state }) => {
+export const Button = ({ onClick, disabled, textChenge }) => {
   return (
     <>
-      {state && <Loader />}
       <div className={css.buttonFlex}>
-        <button onClick={onClick} className={css.Button}>
-          Load More
+        <button disabled={disabled} onClick={onClick} className={css.Button}>
+          {textChenge}
         </button>
       </div>
     </>

@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 
 export const ImageGallery = ({ dataPicture, clickOnPic }) => {
   return (
-    <>
-      <ul className={css.ImageGallery}>
-        {dataPicture.map(el => {
-          const { id } = el;
-          return (
-            <ImageGalleryItem key={id} el={el} clickOnItemPic={clickOnPic} />
-          );
-        })}
-      </ul>
-    </>
+    <ul className={css.ImageGallery}>
+      {dataPicture.map(el => {
+        const { id } = el;
+        return (
+          // <li> Лишкиcat по заданию в размете ImageGalleryItem
+          <ImageGalleryItem key={id} el={el} clickOnItemPic={clickOnPic} />
+          // </li>
+        );
+      })}
+    </ul>
   );
 };
 
