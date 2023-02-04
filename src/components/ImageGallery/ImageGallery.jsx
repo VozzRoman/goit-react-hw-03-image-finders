@@ -8,7 +8,7 @@ export const ImageGallery = ({ dataPicture, clickOnPic }) => {
       {dataPicture.map(el => {
         const { id } = el;
         return (
-          // <li> Лишкиcat по заданию в размете ImageGalleryItem
+          // <li> Лишки по заданию в разметке ImageGalleryItem
           <ImageGalleryItem key={id} el={el} clickOnItemPic={clickOnPic} />
           // </li>
         );
