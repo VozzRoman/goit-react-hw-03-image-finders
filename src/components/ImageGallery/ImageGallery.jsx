@@ -1,22 +1,46 @@
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
-import { Component } from 'react';
 import css from '../ImageGallery/ImageGalleryStyle.module.css';
-export class ImageGallery extends Component {
-  render() {
-    return (
-      <>
-        <ul className={css.ImageGallery}>
-          {this.props.dataPicture.map(el => {
-            return (
-              <ImageGalleryItem
-                key={el.id}
-                el={el}
-                clickOnItemPic={this.props.clickOnPic}
-              />
-            );
-          })}
-        </ul>
-      </>
-    );
-  }
-}
+import PropTypes from 'prop-types';
+
+export const ImageGallery = ({ dataPicture, clickOnPic }) => {
+  return (
+    <>
+      <ul className={css.ImageGallery}>
+        {dataPicture.map(el => {
+          const { id } = el;
+          return (
+            <ImageGalleryItem key={id} el={el} clickOnItemPic={clickOnPic} />
+          );
+        })}
+      </ul>
+    </>
+  );
+};
+
+ImageGallery.propTypes = {
+  clickOnPic: PropTypes.func.isRequired,
+  dataPicture: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }).isRequired
+  ).isRequired,
+};
+// // export class ImageGallery extends Component {
+// //   render() {
+// //     return (
+// <>
+//   {/* <ul className={css.ImageGallery}>
+//           {this.props.dataPicture.map(el => {
+//             return (
+//               <ImageGalleryItem
+//                 key={el.id}
+//                 el={el}
+//                 clickOnItemPic={this.props.clickOnPic}
+//               />
+//             );
+//           })}
+//         </ul> */}
+// </>;
+// //     );
+// //   }
+// // }

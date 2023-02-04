@@ -1,6 +1,11 @@
 import { Component } from 'react';
 import css from '../Searchbar/SearchbarStlye.module.css';
+import PropTypes from 'prop-types';
 export class Searchbar extends Component {
+  static propTtypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+
   state = {
     search: '',
   };
@@ -13,7 +18,12 @@ export class Searchbar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     console.log(this.state.search);
+    if (this.state.search === '') {
+      alert('Enter name of collection');
+      return;
+    }
     this.props.onSubmit(this.state.search);
+    this.setState({ search: '' });
   };
 
   render() {

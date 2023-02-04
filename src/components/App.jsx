@@ -4,6 +4,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { fecthServerApi } from 'api/apiService';
 import { Modal } from './Modal/Modal';
 import { Loader } from './Loader/Loader';
+import { Button } from './Button/Button';
 
 export class App extends Component {
   state = {
@@ -13,11 +14,17 @@ export class App extends Component {
     visibility: false,
     image: '',
     loading: false,
+    tags: '',
   };
   async componentDidUpdate(prevProps, prevState) {
-    if (prevState.search !== this.state.search) {
-      console.log(prevState, 'prevSearch');
-      console.log(this.state.search);
+    if (
+      prevState.search !== this.state.search ||
+      prevState.currentPage !== this.state.currentPage
+    ) {
+      console.log('prevState.currentPage', prevState.currentPage);
+      console.log('this.state.currentPage', this.state.currentPage);
+      console.log('prevState.search', prevState.search);
+      console.log('this.state.search', this.state.search);
       this.setState({
         loading: true,
       });
@@ -25,8 +32,10 @@ export class App extends Component {
         this.state.search,
         this.state.currentPage
       );
-      this.setState({
-        picture: data.hits,
+      this.setState(prevState => {
+        return {
+          picture: [...prevState.picture, ...data.hits],
+        };
       });
       this.setState({
         loading: false,
@@ -35,16 +44,29 @@ export class App extends Component {
   }
   handlerFromForm = search => {
     console.log(search);
+
     this.setState({
+      currentPage: 1,
+      image: '',
       search,
+      picture: [],
     });
   };
 
-  showToggleModal = image => {
+  showToggleModal = (image, tags) => {
     this.setState(prevState => {
       return {
         visibility: !prevState.visibility,
         image,
+        tags,
+      };
+    });
+  };
+
+  loadMOreButton = () => {
+    this.setState(prevState => {
+      return {
+        currentPage: prevState.currentPage + 1,
       };
     });
   };
@@ -53,13 +75,22 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.handlerFromForm} />
-        {this.state.loading && <Loader />}
+
         <ImageGallery
           dataPicture={this.state.picture}
           clickOnPic={this.showToggleModal}
         />
+
+        {this.state.picture.length !== 0 && (
+          <Button onClick={this.loadMOreButton} />
+        )}
+        {this.state.loading && <Loader />}
         {this.state.visibility && (
-          <Modal closeModal={this.showToggleModal} img={this.state.image} />
+          <Modal
+            closeModal={this.showToggleModal}
+            img={this.state.image}
+            tags={this.state.tags}
+          />
         )}
       </>
     );

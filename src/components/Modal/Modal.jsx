@@ -1,7 +1,14 @@
 import { Component } from 'react';
 import css from '../Modal/ModalStyle.module.css';
+import PropTypes from 'prop-types';
 
 export class Modal extends Component {
+  static propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    img: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+  };
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -26,11 +33,11 @@ export class Modal extends Component {
   };
 
   render() {
-    const { img } = this.props;
+    const { img, tags } = this.props;
     return (
       <div className={css.Overlay} onClick={this.handleBackDrop}>
         <div className={css.Modal}>
-          <img src={img} alt="" />
+          <img src={img} alt={tags} />
         </div>
       </div>
     );
